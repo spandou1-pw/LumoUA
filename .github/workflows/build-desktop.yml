@@ -19,6 +19,9 @@ on:
       - 'app-v*'
   workflow_dispatch: {} # also runnable manually from the GitHub Actions tab, no tag needed
 
+permissions:
+  contents: write
+
 jobs:
   build-desktop:
     strategy:
