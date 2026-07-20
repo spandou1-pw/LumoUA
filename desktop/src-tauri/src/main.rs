@@ -41,35 +41,10 @@ async fn create_window(app: tauri::AppHandle, url: String, label: String) -> Res
     Ok(())
 }
 
-/// doc: Automatic Updates — checked explicitly (Settings screen's "Check
-/// for updates" button, doc WEB_DESKTOP.md) rather than only silently on
-/// startup, so users have visibility into the process; a startup check
-/// still also runs (below) for the common case of picking up updates
-/// without the user needing to look for them.
-fn check_for_updates_on_startup(app: &tauri::AppHandle) {
-    let handle = app.clone();
-    tauri::async_runtime::spawn(async move {
-        match tauri::updater::builder(handle).check().await {
-            Ok(update) => {
-                if update.is_update_available() {
-                    // doc: `updater.dialog: true` in tauri.conf.json already
-                    // shows the native OS update prompt automatically;
-                    // this log/event is for in-app UI (e.g. a settings-page
-                    // badge) to also reflect availability without a second
-                    // network round-trip.
-                    println!("Update available: {}", update.latest_version());
-                }
-            }
-            Err(e) => eprintln!("Update check failed: {}", e),
-        }
-    });
-}
-
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
             register_global_shortcuts(&app.handle())?;
-            check_for_updates_on_startup(&app.handle());
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![create_window])
