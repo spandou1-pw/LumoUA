@@ -132,7 +132,7 @@ export function ChatView({ conversation, onToggleInfo, showInfo }: {
           <div className="cv-loading">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: '0 16px' }}>
-                <Skeleton width={`${35 + (i % 3) * 15}%`} height="36px" radius="18px" />
+                <Skeleton width={`${35 + (i % 3) * 15}%`} height={36} />
               </div>
             ))}
           </div>

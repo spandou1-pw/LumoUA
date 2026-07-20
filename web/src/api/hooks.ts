@@ -229,7 +229,10 @@ export function useNotifications() {
 export interface Conversation {
   id: string;
   participantIds: string[];
+  participantNames?: string[];
+  avatarUrl?: string | null;
   lastMessageAt: string | null;
+  lastMessagePreview?: string | null;
   unreadCount: number;
 }
 
@@ -243,24 +246,24 @@ export interface Message {
   id: string;
   conversationId: string;
   senderId: string;
-  text: string;
+  ciphertext: string;
   createdAt: string;
   editedAt?: string | null;
   deletedAt?: string | null;
 }
 
 export function useMessages(conversationId: string) {
-  return useQuery<Message[]>({
+  return useQuery<{ items: Message[] }>({
     queryKey: ['messages', conversationId],
-    queryFn: () => api.get<Message[]>(`/conversations/${conversationId}/messages`),
+    queryFn: () => api.get<{ items: Message[] }>(`/conversations/${conversationId}/messages`),
     enabled: !!conversationId,
   });
 }
 
 export function useSendMessage() {
   return useMutation({
-    mutationFn: ({ conversationId, text }: { conversationId: string; text: string }) =>
-      api.post<Message>(`/conversations/${conversationId}/messages`, { text }),
+    mutationFn: ({ conversationId, body }: { conversationId: string; body: string }) =>
+      api.post<Message>(`/conversations/${conversationId}/messages`, { text: body }),
   });
 }
 
@@ -272,7 +275,7 @@ export function useDeleteMessage() {
 
 export function useEditMessage() {
   return useMutation({
-    mutationFn: ({ messageId, text }: { messageId: string; text: string }) =>
-      api.patch<Message>(`/messages/${messageId}`, { text }),
+    mutationFn: ({ messageId, body }: { messageId: string; body: string }) =>
+      api.patch<Message>(`/messages/${messageId}`, { ciphertext: body }),
   });
 }
