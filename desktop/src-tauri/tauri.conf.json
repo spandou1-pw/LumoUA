@@ -34,7 +34,7 @@
       "active": true,
       "identifier": "app.lumo.desktop",
       "icon": ["icons/icon.icns", "icons/icon.ico", "icons/icon.png"],
-      "targets": ["msi", "nsis", "dmg", "app"]
+      "targets": ["msi", "nsis", "dmg", "app", "deb", "rpm", "appimage"]
     },
     "security": {
       "csp": "default-src 'self'; connect-src 'self' https://api.lumo.app wss://api.lumo.app"
