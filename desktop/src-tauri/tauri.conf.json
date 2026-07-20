@@ -40,10 +40,7 @@
       "csp": "default-src 'self'; connect-src 'self' https://api.lumo.app wss://api.lumo.app"
     },
     "updater": {
-      "active": true,
-      "endpoints": ["https://updates.lumo.app/{{target}}/{{arch}}/{{current_version}}"],
-      "dialog": true,
-      "pubkey": "REPLACE_WITH_REAL_GENERATED_PUBLIC_KEY"
+      "active": false
     },
     "windows": [
       {
