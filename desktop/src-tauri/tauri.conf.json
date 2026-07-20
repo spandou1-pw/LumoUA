@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schema.tauri.app/config/1.0.0",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devPath": "../dist-web",
+    "distDir": "../dist-web"
+  },
+  "package": {
+    "productName": "Lumo",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "notification": { "all": true },
+      "globalShortcut": { "all": true },
+      "dialog": { "open": true, "save": true },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "scope": ["$APPDATA/lumo/*", "$DOWNLOAD/*"]
+      },
+      "window": {
+        "all": false,
+        "create": true,
+        "close": true,
+        "setTitle": true,
+        "setFocus": true
+      },
+      "shell": { "open": false }
+    },
+    "bundle": {
+      "active": true,
+      "identifier": "app.lumo.desktop",
+      "icon": ["icons/icon.icns", "icons/icon.ico", "icons/icon.png"],
+      "targets": ["msi", "nsis", "dmg", "app"]
+    },
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' https://api.lumo.app wss://api.lumo.app"
+    },
+    "updater": {
+      "active": true,
+      "endpoints": ["https://updates.lumo.app/{{target}}/{{arch}}/{{current_version}}"],
+      "dialog": true,
+      "pubkey": "REPLACE_WITH_REAL_GENERATED_PUBLIC_KEY"
+    },
+    "windows": [
+      {
+        "title": "Lumo",
+        "url": "/app",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 480,
+        "minHeight": 400,
+        "resizable": true,
+        "fileDropEnabled": true
+      }
+    ]
+  }
+}

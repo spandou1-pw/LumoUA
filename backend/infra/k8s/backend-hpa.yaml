@@ -1,0 +1,56 @@
+# doc SECURITY.md Horizontal Scaling, doc 43 Scalability Plan: scales the
+# backend Deployment (assumed to exist as `edina-backend`, doc 34) on CPU
+# and memory, with conservative scale-down behavior so a brief traffic dip
+# doesn't thrash pod count. Not applied/verified against a real cluster in
+# this environment.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: edina-backend-hpa
+  namespace: edina
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: edina-backend
+  minReplicas: 3 # doc 34: never below 3 — tolerates one node failure without dropping below 2 for the rolling-deploy window
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300 # doc 43: wait 5 minutes of sustained low load before scaling down
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 120
+    scaleUp:
+      stabilizationWindowSeconds: 0 # doc: scale up immediately on real load — asymmetric with scale-down deliberately
+      policies:
+        - type: Pods
+          value: 3
+          periodSeconds: 60
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: edina-backend-pdb
+  namespace: edina
+spec:
+  # doc 34: rolling deploys and voluntary node drains must never drop
+  # below 2 healthy pods simultaneously.
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: edina-backend

@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+dist/
+target/
+*.log
+.DS_Store
+.env
+.env.local
+.env.production
+desktop/target/
+desktop/src-tauri/target/
+backend/node_modules/
+web/node_modules/
+.web/

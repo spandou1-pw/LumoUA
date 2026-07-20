@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Lumo",
+    "slug": "lumo",
+    "scheme": "lumo",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*"],
+    "ios": { "supportsTablet": true, "bundleIdentifier": "app.lumo.ua" },
+    "android": { "package": "app.lumo.ua" },
+    "plugins": ["expo-secure-store"]
+  }
+}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Єдина — UI Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#12162A; --night-1:#181D33; --night-2:#1F2540;
+  --stone:#EDEDE6; --linen:#F7F4EC; --white:#FFFFFF;
+  --wheat:#D9A441; --wheat-soft:#F0D9A8;
+  --chicory:#5B7FB8; --chicory-soft:#DCE5F3;
+  --chornozem:#2B2620;
+  --text-1:#2B2620; --text-2:#6B655A; --text-1-dark:#F2F0E8; --text-2-dark:#A7A290;
+  --success:#4C8C5A; --error:#C0483B; --warning:#C98A2E;
+  --r-s:8px; --r-m:16px; --r-full:999px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{ font-family:'Golos Text',sans-serif; background:#DAD5C6; color:var(--text-1); padding:0 0 120px; }
+
+/* ===== TOP MASTHEAD ===== */
+.masthead{ background:var(--night); color:var(--text-1-dark); padding:56px 48px 40px; }
+.masthead .wordmark{ display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+.mark-ring{ width:40px; height:40px; }
+.masthead h1{ font-size:32px; font-weight:800; letter-spacing:-0.01em; }
+.masthead .dom{ font-family:'JetBrains Mono'; font-size:13px; color:var(--wheat); background:rgba(217,164,65,.12); padding:3px 10px; border-radius:var(--r-full); }
+.masthead p{ color:var(--text-2-dark); font-size:15px; max-width:680px; line-height:1.55; }
+
+.wrap{ padding:48px; }
+section.kit-group{ margin-bottom:72px; max-width:1180px; }
+.kit-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:22px; border-bottom:2px solid var(--chornozem); padding-bottom:10px; }
+.kit-head .idx{ font-family:'JetBrains Mono'; font-size:12px; color:var(--wheat); background:var(--chornozem); padding:4px 9px; border-radius:var(--r-s); font-weight:600; }
+.kit-head h2{ font-size:22px; font-weight:700; color:var(--chornozem); }
+.kit-head .note{ margin-left:auto; font-size:12px; color:var(--text-2); font-family:'JetBrains Mono'; }
+.spec{ font-size:13px; color:var(--text-2); margin-bottom:20px; line-height:1.6; max-width:820px; }
+.spec b{ color:var(--chornozem); }
+.swatch-row{ display:flex; flex-wrap:wrap; gap:28px; align-items:flex-end; background:var(--white); border-radius:var(--r-m); padding:28px; }
+.item{ display:flex; flex-direction:column; align-items:center; gap:10px; }
+.item .cap{ font-size:11px; color:var(--text-2); font-family:'JetBrains Mono'; text-align:center; max-width:130px; }
+.dark-panel{ background:var(--night); }
+.dark-panel .item .cap{ color:var(--text-2-dark); }
+
+/* Component base styles */
+.btn{ border-radius:var(--r-s); font-weight:600; border:none; font-family:inherit; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+.btn-primary{ background:var(--wheat); color:var(--chornozem); }
+.btn-secondary{ background:transparent; border:1.5px solid var(--chicory); color:var(--chicory); }
+.btn-tertiary{ background:transparent; color:var(--chicory); }
+.btn-destructive{ background:transparent; border:1.5px solid var(--error); color:var(--error); }
+.btn-sm{ height:32px; padding:0 14px; font-size:13px; }
+.btn-md{ height:44px; padding:0 20px; font-size:15px; }
+.btn-lg{ height:52px; padding:0 28px; font-size:16px; }
+.btn-disabled{ background:#E2DFD3; color:#A79F8C; }
+.btn-hover{ background:#C4913A; }
+.btn-pressed{ background:#B37F2C; transform:scale(0.98); }
+
+.input-w{ display:flex; flex-direction:column; gap:6px; width:220px; }
+.input-lbl{ font-size:12.5px; font-weight:600; color:var(--text-1); }
+.input{ border:1.5px solid #D6D2C4; border-radius:var(--r-s); padding:13px 14px; font-size:15px; color:var(--text-1); background:var(--white); font-family:inherit; }
+.input.focus{ border-color:var(--chicory); box-shadow:0 0 0 3px rgba(91,127,184,.15); }
+.input.error{ border-color:var(--error); }
+.input.disabled{ background:#F2F0E9; color:#B7B0A0; border-color:#E2DFD3; }
+.input.filled{ color:var(--text-1); }
+.help{ font-size:11.5px; color:var(--text-2); }
+.help.err{ color:var(--error); }
+
+.avatar{ border-radius:50%; background:var(--chicory); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; border:2.5px solid var(--linen); flex-shrink:0; }
+.avatar.xs{ width:24px; height:24px; font-size:10px; }
+.avatar.sm{ width:32px; height:32px; font-size:12px; }
+.avatar.md{ width:40px; height:40px; font-size:14px; }
+.avatar.lg{ width:64px; height:64px; font-size:20px; }
+.avatar.xl{ width:96px; height:96px; font-size:30px; border-width:4px; }
+
+.ring{ border-radius:50%; padding:2.5px; display:inline-flex; }
+.ring.unseen{ background:linear-gradient(135deg,var(--wheat),#C98A2E); }
+.ring.seen{ background:var(--chicory-soft); }
+.ring.live{ background:linear-gradient(135deg,var(--error),#E08B7D); position:relative; }
+.ring.live::after{ content:''; position:absolute; inset:-4px; border-radius:50%; border:1.5px solid var(--error); animation:pulse 1.6s ease-in-out infinite; }
+@keyframes pulse{ 0%{transform:scale(.9); opacity:.7;} 70%{transform:scale(1.15); opacity:0;} 100%{opacity:0;} }
+.ring.none{ padding:0; }
+
+.card{ background:var(--white); border-radius:var(--r-m); border:1px solid #EFECE1; padding:16px; width:280px; }
+.chip{ background:var(--linen); border:1px solid #E2DFD3; border-radius:var(--r-full); padding:5px 12px; font-size:11.5px; font-weight:600; color:var(--text-2); }
+.chip.active{ background:var(--wheat); color:var(--chornozem); border-color:var(--wheat); }
+
+.bubble{ max-width:230px; padding:10px 14px; border-radius:16px; font-size:14.5px; line-height:1.4; }
+.bubble.mine{ background:var(--chicory-soft); border-bottom-right-radius:4px; }
+.bubble.theirs{ background:var(--white); border:1px solid #EFECE1; border-bottom-left-radius:4px; }
+.bubble.sending{ opacity:.55; }
+
+.frame{ width:100%; }
+.phone-shell{ width:340px; border-radius:32px; background:#000; padding:10px; box-shadow:0 20px 40px -15px rgba(0,0,0,.35); }
+.phone-scr{ background:var(--stone); border-radius:24px; overflow:hidden; height:560px; display:flex; flex-direction:column; }
+
+.tabbar{ height:60px; display:flex; align-items:center; justify-content:space-around; background:var(--linen); border-top:1px solid #E2DFD3; flex-shrink:0; }
+.tab-i{ width:22px; height:22px; border-radius:6px; }
+.tab-i.active{ background:var(--wheat); }
+.tab-i.inactive{ border:1.75px solid var(--text-2); background:transparent; }
+.tab-fab{ width:42px; height:42px; border-radius:var(--r-full); background:var(--wheat); display:flex; align-items:center; justify-content:center; color:var(--chornozem); font-weight:700; font-size:20px; }
+.tab-lbl{ font-size:9.5px; color:var(--text-2); margin-top:3px; text-align:center; }
+
+.topnav{ height:56px; display:flex; align-items:center; gap:10px; padding:0 16px; background:var(--linen); border-bottom:1px solid #E2DFD3; flex-shrink:0; }
+.topnav .ttl{ font-weight:700; font-size:16px; }
+.topnav .ic{ font-size:19px; }
+
+.searchbar{ display:flex; align-items:center; gap:8px; background:var(--white); border:1.5px solid #D6D2C4; border-radius:var(--r-full); padding:10px 16px; width:280px; color:var(--text-2); font-size:14px; }
+.searchbar.focus{ border-color:var(--chicory); background:#fff; }
+
+.eng-item{ display:flex; align-items:center; gap:5px; font-size:13px; color:var(--text-2); font-weight:600; }
+.reaction-bar{ display:flex; gap:22px; align-items:center; padding:12px 16px; background:var(--white); border-radius:var(--r-full); border:1px solid #EFECE1; width:fit-content; }
+.reaction-pop{ display:flex; gap:6px; background:var(--chornozem); border-radius:var(--r-full); padding:8px 12px; }
+.reaction-emoji{ font-size:20px; transition:transform .15s; }
+
+.notif-card{ display:flex; gap:12px; padding:12px 14px; background:var(--white); border-radius:var(--r-m); border:1px solid #EFECE1; width:320px; align-items:center; }
+.notif-unread{ background:var(--wheat-soft); border-color:var(--wheat); }
+
+.comm-card{ width:280px; border-radius:var(--r-m); overflow:hidden; border:1px solid #EFECE1; background:var(--white); }
+.comm-cover{ height:70px; background:linear-gradient(120deg,#5B7FB8,#12162A); }
+
+code.tok{ font-family:'JetBrains Mono'; font-size:11px; background:var(--chornozem); color:var(--wheat); padding:2px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="wordmark">
+    <svg class="mark-ring" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#D9A441" stroke-width="4" stroke-dasharray="80 101" stroke-linecap="round" transform="rotate(-90 20 20)"/><circle cx="20" cy="20" r="16" fill="none" stroke="#3A3F5C" stroke-width="4" stroke-dasharray="21 101" stroke-dashoffset="-80" stroke-linecap="round" transform="rotate(-90 20 20)"/></svg>
+    <h1>Єдина</h1><span class="dom">edina.ua</span>
+  </div>
+  <p>UI Kit — бібліотека компонентів на токенах з дизайн-системи (палітра «пшениця / цикорій», Golos Text, кільце як символ цілісності). Кожен компонент показаний з варіантами розмірів і станів, готовий до складання екранів.</p>
+</div>
+
+<div class="wrap">
+
+<!-- BUTTON -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">01</span><h2>Button</h2><span class="note">4 варіанти × 3 розміри × стани</span></div>
+  <p class="spec">Токени: <code class="tok">radius.small</code> · без фіксованої ширини (сайзинг за контентом — важливо для укр./англ. довжини тексту).</p>
+  <div class="swatch-row">
+    <div class="item"><button class="btn btn-primary btn-lg">Продовжити</button><div class="cap">Primary / lg</div></div>
+    <div class="item"><button class="btn btn-primary btn-md">Продовжити</button><div class="cap">Primary / md (default)</div></div>
+    <div class="item"><button class="btn btn-primary btn-sm">Підписатися</button><div class="cap">Primary / sm</div></div>
+    <div class="item"><button class="btn btn-secondary btn-md">Написати</button><div class="cap">Secondary / md</div></div>
+    <div class="item"><button class="btn btn-tertiary btn-md">Скасувати</button><div class="cap">Tertiary / md</div></div>
+    <div class="item"><button class="btn btn-destructive btn-md">Видалити</button><div class="cap">Destructive / md</div></div>
+  </div>
+  <div class="swatch-row" style="margin-top:14px;">
+    <div class="item"><button class="btn btn-primary btn-md">Увійти</button><div class="cap">Rest</div></div>
+    <div class="item"><button class="btn btn-hover btn-md" style="color:#fff;">Увійти</button><div class="cap">Hover (web)</div></div>
+    <div class="item"><button class="btn btn-pressed btn-md" style="color:#fff;">Увійти</button><div class="cap">Pressed</div></div>
+    <div class="item"><button class="btn btn-disabled btn-md">Увійти</button><div class="cap">Disabled</div></div>
+    <div class="item"><button class="btn btn-primary btn-md" style="border:2px solid var(--chicory); outline-offset:2px;">Увійти</button><div class="cap">Focus-visible (keyboard)</div></div>
+  </div>
+</section>
+
+<!-- INPUT -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">02</span><h2>Input</h2><span class="note">текст, textarea, OTP</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="input-w"><span class="input-lbl">Пошта</span><div class="input">Пусте поле</div></div><div class="cap">Rest / empty</div></div>
+    <div class="item"><div class="input-w"><span class="input-lbl">Пошта</span><div class="input focus">soloмiya@edina.ua</div></div><div class="cap">Focus</div></div>
+    <div class="item"><div class="input-w"><span class="input-lbl">Пошта</span><div class="input error">невірна_пошта</div><span class="help err">Перевірте формат адреси</span></div><div class="cap">Error</div></div>
+    <div class="item"><div class="input-w"><span class="input-lbl">Пошта</span><div class="input disabled">soloмiya@edina.ua</div></div><div class="cap">Disabled</div></div>
+    <div class="item"><div style="display:flex; gap:6px;"><div class="input" style="width:44px; text-align:center; padding:13px 0;">4</div><div class="input" style="width:44px; text-align:center; padding:13px 0;">2</div><div class="input focus" style="width:44px; text-align:center; padding:13px 0;">|</div><div class="input" style="width:44px; text-align:center; padding:13px 0;"></div></div><div class="cap">OTP / код підтвердження</div></div>
+    <div class="item"><div class="input" style="width:220px; height:80px; align-items:flex-start;">Що у вас нового?</div><div class="cap">Textarea (авто-зростає)</div></div>
+  </div>
+</section>
+
+<!-- AVATAR -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">03</span><h2>Avatar</h2><span class="note">5 розмірів × кільце-стани</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="avatar xs">СВ</div><div class="cap">xs · 24px</div></div>
+    <div class="item"><div class="avatar sm">СВ</div><div class="cap">sm · 32px</div></div>
+    <div class="item"><div class="avatar md">СВ</div><div class="cap">md · 40px</div></div>
+    <div class="item"><div class="avatar lg">СВ</div><div class="cap">lg · 64px</div></div>
+    <div class="item"><div class="avatar xl">СВ</div><div class="cap">xl · 96px</div></div>
+  </div>
+  <div class="swatch-row" style="margin-top:14px;">
+    <div class="item"><div class="ring none"><div class="avatar md">СВ</div></div><div class="cap">Без кільця</div></div>
+    <div class="item"><div class="ring unseen"><div class="avatar md" style="border-color:var(--white);">СВ</div></div><div class="cap">unseen-story (wheat)</div></div>
+    <div class="item"><div class="ring seen"><div class="avatar md" style="border-color:var(--white);">СВ</div></div><div class="cap">seen-story (chicory)</div></div>
+    <div class="item"><div class="ring live"><div class="avatar md" style="border-color:var(--white);">СВ</div></div><div class="cap">live (pulse, майбутнє)</div></div>
+  </div>
+</section>
+
+<!-- CARD -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">04</span><h2>Card</h2><span class="note">базовий контейнер</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="card"><div style="font-weight:700; margin-bottom:6px;">Заголовок картки</div><div style="font-size:13.5px; color:var(--text-2); line-height:1.4;">Базовий контейнер — radius.medium, elevation-1, використовується як основа для post/community/profile-карток нижче.</div></div><div class="cap">Card / elevation-1</div></div>
+    <div class="item"><div class="card" style="box-shadow:0 8px 20px rgba(43,38,32,.08); border:none;"><div style="font-weight:700; margin-bottom:6px;">Модалка/Sheet</div><div style="font-size:13.5px; color:var(--text-2);">elevation-2 — тінь замість border</div></div><div class="cap">Card / elevation-2</div></div>
+  </div>
+</section>
+
+<!-- CHAT BUBBLE -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">05</span><h2>Chat Bubble</h2><span class="note">свій / чужий / стани</span></div>
+  <div class="swatch-row" style="background:var(--stone);">
+    <div class="item"><div class="bubble theirs">Привіт! Ти завтра на зустрічі?</div><div class="cap">Отримане</div></div>
+    <div class="item"><div class="bubble mine">Так, буду о 10:00 🙌</div><div class="cap">Своє (chicory-soft)</div></div>
+    <div class="item"><div class="bubble mine sending">Надсилаю фото…</div><div class="cap">Sending (opacity .55)</div></div>
+    <div class="item"><div style="display:flex; gap:4px; background:var(--white); padding:10px 14px; border-radius:16px; border-bottom-left-radius:4px; border:1px solid #EFECE1; width:fit-content;"><div style="width:6px;height:6px;border-radius:50%;background:var(--text-2);"></div><div style="width:6px;height:6px;border-radius:50%;background:var(--text-2); opacity:.6;"></div><div style="width:6px;height:6px;border-radius:50%;background:var(--text-2); opacity:.3;"></div></div><div class="cap">Typing indicator</div></div>
+    <div class="item"><div><div class="bubble theirs" style="margin-bottom:3px;">Добре, до завтра!</div><div style="font-size:10px; color:var(--text-2); font-family:'JetBrains Mono';">14:02</div></div><div class="cap">Consecutive group — час лише на останній</div></div>
+  </div>
+</section>
+
+<!-- BOTTOM NAVIGATION -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">06</span><h2>Bottom Navigation</h2><span class="note">mobile · 5 слотів</span></div>
+  <div class="phone-shell" style="height:auto; padding:0;"><div style="border-radius:0 0 20px 20px; overflow:hidden;">
+    <div class="tabbar" style="height:76px;">
+      <div style="text-align:center;"><div class="tab-i active"></div><div class="tab-lbl" style="color:var(--wheat); font-weight:700;">Стрічка</div></div>
+      <div style="text-align:center;"><div class="tab-i inactive"></div><div class="tab-lbl">Пошук</div></div>
+      <div class="tab-fab">+</div>
+      <div style="text-align:center; position:relative;"><div class="tab-i inactive"></div><div style="position:absolute; top:-3px; right:-6px; background:var(--wheat); color:var(--chornozem); font-size:9px; font-weight:800; border-radius:50%; width:15px; height:15px; display:flex; align-items:center; justify-content:center;">2</div><div class="tab-lbl">Чати</div></div>
+      <div style="text-align:center;"><div class="avatar xs" style="border:none; margin:0 auto;">Ти</div><div class="tab-lbl">Профіль</div></div>
+    </div>
+  </div></div>
+  <p class="spec" style="margin-top:14px;">Активний стан — заповнена wheat-іконка + підпис; неактивний — outline. Компоуз — не звичайний таб, а FAB по центру (doc 09 IA).</p>
+</section>
+
+<!-- TOP NAVIGATION -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">07</span><h2>Top Navigation</h2><span class="note">3 варіанти</span></div>
+  <div class="swatch-row" style="flex-direction:column; align-items:stretch; gap:14px;">
+    <div class="topnav" style="width:400px; border-radius:var(--r-s);"><span class="ttl">Стрічка</span><span style="margin-left:auto;" class="ic">🔔</span></div>
+    <div class="topnav" style="width:400px; border-radius:var(--r-s);"><span class="ic">←</span><span class="ttl">Публікація</span></div>
+    <div class="topnav" style="width:400px; border-radius:var(--r-s);"><span class="ic">←</span><div class="avatar xs">МК</div><div><div style="font-size:14px; font-weight:700;">Марія Коваль</div><div style="font-size:10.5px; color:var(--text-2);">🔒 наскрізне шифрування</div></div><span style="margin-left:auto;" class="ic">⋮</span></div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">08</span><h2>Search</h2><span class="note">поле + результати</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="searchbar">🔍 Пошук</div><div class="cap">Rest</div></div>
+    <div class="item"><div class="searchbar focus">🔍 урбаністика|</div><div class="cap">Focus / typing</div></div>
+    <div class="item" style="width:280px;">
+      <div style="display:flex; gap:8px; margin-bottom:10px;"><div class="chip active">Люди</div><div class="chip">Пости</div><div class="chip">Хештеги</div></div>
+      <div style="display:flex; align-items:center; gap:10px; padding:8px 0;"><div class="avatar sm">СВ</div><div><div style="font-size:13px; font-weight:700;">Соломія Власенко</div><div style="font-size:11px; color:var(--text-2);">@solomiya</div></div></div>
+      <div class="cap" style="text-align:left; margin-top:4px;">Result blend — секції за типом</div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO PLAYER -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">09</span><h2>Video Player</h2><span class="note">controls overlay</span></div>
+  <div class="swatch-row" style="background:var(--night);">
+    <div class="item"><div style="width:300px; height:180px; border-radius:var(--r-m); background:linear-gradient(135deg,#2B2620,#12162A); position:relative; overflow:hidden;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;"><div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px;">▶</div></div>
+      <div style="position:absolute; bottom:0; left:0; right:0; padding:10px 12px; background:linear-gradient(0deg,rgba(0,0,0,.55),transparent);">
+        <div style="height:3px; background:rgba(255,255,255,.3); border-radius:2px; margin-bottom:8px;"><div style="width:35%; height:100%; background:var(--wheat); border-radius:2px;"></div></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; color:#fff; font-size:11px; font-family:'JetBrains Mono';"><span>01:24 / 03:58</span><span style="display:flex; gap:12px;"><span>🔇</span><span>⛶</span></span></div>
+      </div>
+    </div><div class="cap">Playing — controls fade after 2с бездіяльності</div></div>
+    <div class="item"><div style="width:300px; height:180px; border-radius:var(--r-m); background:linear-gradient(135deg,#2B2620,#12162A); display:flex; align-items:center; justify-content:center;"><div style="width:44px; height:44px; border-radius:50%; border:3px solid var(--wheat); border-top-color:transparent; animation:pulse 1s linear infinite;"></div></div><div class="cap">Buffering</div></div>
+  </div>
+</section>
+
+<!-- PHOTO VIEWER -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">10</span><h2>Photo Viewer</h2><span class="note">fullscreen</span></div>
+  <div class="phone-shell"><div class="phone-scr" style="background:#000;">
+    <div style="flex:1; background:linear-gradient(135deg,#3a2f1f,#12162A); position:relative;">
+      <div style="position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between; color:#fff;"><span>✕</span><span style="font-family:'JetBrains Mono'; font-size:12px;">2 / 4</span><span>⋯</span></div>
+      <div style="position:absolute; bottom:16px; left:16px; right:16px; display:flex; justify-content:center; gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);"></span><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);"></span><span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);"></span></div>
+    </div>
+  </div></div>
+  <p class="spec" style="margin-top:14px;">Pinch-to-zoom + double-tap-zoom стандартні; свайп вниз закриває (дзеркально до відкриття з поста/каруселі, доц-анімації Messenger).</p>
+</section>
+
+<!-- REACTION BAR -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">11</span><h2>Reaction Bar</h2><span class="note">engagement + emoji picker</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="reaction-bar"><div class="eng-item">♡ 128</div><div class="eng-item">💬 14</div><div class="eng-item">↻ 3</div><div class="eng-item">🔖</div></div><div class="cap">Стандартний бар (Phase 1)</div></div>
+    <div class="item"><div class="reaction-bar" style="border-color:var(--wheat);"><div class="eng-item" style="color:var(--error); font-weight:700;">♥ 129</div><div class="eng-item">💬 14</div><div class="eng-item">↻ 3</div><div class="eng-item">🔖</div></div><div class="cap">Liked-стан (заповнене серце)</div></div>
+    <div class="item"><div class="reaction-pop"><span class="reaction-emoji">❤️</span><span class="reaction-emoji">😂</span><span class="reaction-emoji">😮</span><span class="reaction-emoji">😢</span><span class="reaction-emoji">👏</span></div><div class="cap">Emoji reactions (Phase 2, MSG-6/POST-6)</div></div>
+  </div>
+</section>
+
+<!-- STORY RING -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">12</span><h2>Story Ring</h2><span class="note">детально — сигнатурний елемент</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="ring unseen" style="padding:3px;"><div class="avatar lg" style="border-color:var(--white);">СВ</div></div><div class="cap">unseen — градієнт wheat→warning<br><code class="tok">#D9A441 → #C98A2E</code></div></div>
+    <div class="item"><div class="ring seen" style="padding:3px;"><div class="avatar lg" style="border-color:var(--white);">СВ</div></div><div class="cap">seen — суцільний chicory-soft<br><code class="tok">#DCE5F3</code></div></div>
+    <div class="item"><div class="ring live" style="padding:3px;"><div class="avatar lg" style="border-color:var(--white);">СВ</div></div><div class="cap">live — pulse-анімація (майбутнє)</div></div>
+    <div class="item"><div style="display:flex; gap:2px;"><div class="ring unseen" style="padding:2px;"><div class="avatar sm" style="border-color:var(--white);">Ти</div></div></div><div style="font-size:26px; text-align:center; color:var(--wheat);">+</div><div class="cap">«Ваша історія» з іконкою додавання</div></div>
+  </div>
+</section>
+
+<!-- NOTIFICATION CARD -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">13</span><h2>Notification Card</h2><span class="note">read / unread</span></div>
+  <div class="swatch-row" style="flex-direction:column; align-items:stretch; gap:10px;">
+    <div class="notif-card notif-unread"><div class="avatar sm" style="background:var(--chicory);">НВ</div><div style="flex:1; font-size:13.5px;"><b>Настя В.</b> вподобала ваш пост</div><span style="font-size:11px; color:var(--text-2); font-family:'JetBrains Mono';">3 хв</span></div>
+    <div class="notif-card"><div class="avatar sm" style="background:#4C8C5A;">ОЛ</div><div style="flex:1; font-size:13.5px; color:var(--text-2);"><b style="color:var(--text-1);">Олег Л.</b> прокоментував: «Круто!»</div><span style="font-size:11px; color:var(--text-2); font-family:'JetBrains Mono';">1 год</span></div>
+  </div>
+  <p class="spec" style="margin-top:10px;">Unread — фон wheat-soft + border wheat (не тільки крапка, доступність doc 47); read — нейтральний фон, приглушений текст.</p>
+</section>
+
+<!-- PROFILE CARD -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">14</span><h2>Profile Card</h2><span class="note">compact — для списків/search</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="card" style="display:flex; align-items:center; gap:12px; width:300px;"><div class="avatar md">СВ</div><div style="flex:1;"><div style="font-weight:700; font-size:14px;">Соломія Власенко ✓</div><div style="font-size:12px; color:var(--text-2);">@solomiya · 842 підписники</div></div><button class="btn btn-primary btn-sm">Підписатись</button></div><div class="cap">У пошуку/списку підписників</div></div>
+  </div>
+</section>
+
+<!-- COMMUNITY CARD -->
+<section class="kit-group">
+  <div class="kit-head"><span class="idx">15</span><h2>Community Card</h2><span class="note">discovery grid</span></div>
+  <div class="swatch-row">
+    <div class="item"><div class="comm-card">
+      <div class="comm-cover"></div>
+      <div style="padding:14px;"><div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;"><div class="avatar sm" style="background:var(--chornozem); margin-top:-28px; border-color:var(--white);">УК</div></div>
+        <div style="font-weight:700; font-size:14.5px;">Урбан-клуб Києва</div>
+        <div style="font-size:12px; color:var(--text-2); margin-bottom:10px;">Публічна · 1.2k учасників</div>
+        <button class="btn btn-secondary btn-sm" style="width:100%;">Приєднатись</button>
+      </div>
+    </div><div class="cap">Discovery grid item</div></div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

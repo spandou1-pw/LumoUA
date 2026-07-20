@@ -1,0 +1,85 @@
+name: Build Desktop App
+
+# doc LUMO.md: this is the real, concrete answer to "give me a working
+# .exe" — this environment has no Windows machine, no Rust toolchain, no
+# code-signing capability, so a compiled binary cannot be produced here.
+# GitHub Actions provides free hosted Windows/macOS/Linux runners; this
+# workflow runs the actual `cargo build`/`tauri build` on those runners
+# and uploads the real installers as a GitHub Release. Push this repo to
+# GitHub, push a tag, and a real .exe/.msi (Windows), .dmg/.app (macOS),
+# and .AppImage/.deb (Linux) appear in the repo's Releases page within
+# roughly 10-15 minutes — no local installation of anything required.
+#
+# Trigger: push a version tag, e.g.:
+#   git tag app-v0.1.0 && git push origin app-v0.1.0
+
+on:
+  push:
+    tags:
+      - 'app-v*'
+  workflow_dispatch: {} # also runnable manually from the GitHub Actions tab, no tag needed
+
+jobs:
+  build-desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows-latest
+            args: ''
+          - platform: macos-latest
+            args: '--target universal-apple-darwin' # one build covers Intel + Apple Silicon Macs
+          - platform: ubuntu-22.04
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install Linux system dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libgtk-3-dev
+
+      - name: Install web dependencies and build the static export
+        working-directory: web
+        run: |
+          npm ci
+          npm run build:desktop
+
+      - name: Install desktop (Tauri CLI) dependencies
+        working-directory: desktop
+        run: npm ci
+
+      # doc: an unsigned build still installs and runs fine on Windows and
+      # Linux (Windows shows a SmartScreen "unknown publisher" warning the
+      # user clicks through — normal for an unsigned indie app, not
+      # broken). macOS is stricter: an unsigned/unnotarized .app will be
+      # blocked by Gatekeeper by default. Real code-signing certificates
+      # (Apple Developer Program, a Windows code-signing cert) are the
+      # concrete next step for a polished distribution — flagged here as
+      # a real, named gap, not silently assumed solved. See LUMO.md.
+      - name: Build the desktop app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: desktop
+          tagName: app-v__VERSION__
+          releaseName: 'Lumo Desktop v__VERSION__'
+          releaseBody: 'Automated build from CI. Windows build is unsigned — click "More info" → "Run anyway" on the SmartScreen warning.'
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Kolo — Дизайн, партія 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#12162A; --night-1:#181D33; --night-2:#1F2540;
+  --stone:#EDEDE6; --linen:#F7F4EC; --white:#FFFFFF;
+  --wheat:#D9A441; --wheat-soft:#F0D9A8;
+  --chicory:#5B7FB8; --chicory-soft:#DCE5F3;
+  --chornozem:#2B2620;
+  --text-1:#2B2620; --text-2:#6B655A; --text-1-dark:#F2F0E8; --text-2-dark:#A7A290;
+  --success:#4C8C5A; --error:#C0483B; --warning:#C98A2E;
+  --r-s:8px; --r-m:16px; --r-full:999px;
+  --sp1:4px; --sp2:8px; --sp3:12px; --sp4:16px; --sp5:24px; --sp6:32px; --sp7:48px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family:'Golos Text',sans-serif;
+  background:#DAD5C6;
+  padding:64px 40px;
+  color:var(--text-1);
+}
+h1.page-title{
+  font-family:'Golos Text',sans-serif; font-weight:800; font-size:40px;
+  color:var(--chornozem); margin-bottom:6px; letter-spacing:-0.02em;
+}
+p.page-sub{ color:var(--text-2); font-size:16px; margin-bottom:56px; max-width:640px; line-height:1.5;}
+section.screen-group{ margin-bottom:88px; }
+.group-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:24px; border-bottom:2px solid var(--chornozem); padding-bottom:12px;}
+.group-head .idx{ font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--wheat); background:var(--chornozem); padding:4px 10px; border-radius:var(--r-s); font-weight:500;}
+.group-head h2{ font-size:24px; font-weight:700; color:var(--chornozem); }
+.group-head .plat{ margin-left:auto; font-size:12px; color:var(--text-2); font-family:'JetBrains Mono',monospace; }
+.row{ display:flex; gap:32px; align-items:flex-start; flex-wrap:wrap; }
+.frame-label{ text-align:center; font-size:12px; color:var(--text-2); margin-top:12px; font-family:'JetBrains Mono',monospace;}
+
+/* ===== MOBILE FRAME ===== */
+.mob{ width:375px; height:812px; border-radius:44px; background:#000; padding:12px; box-shadow:0 30px 60px -20px rgba(0,0,0,.4); position:relative;}
+.mob .screen{ width:100%; height:100%; border-radius:34px; overflow:hidden; position:relative; background:var(--stone); display:flex; flex-direction:column;}
+.notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#000; border-radius:14px; z-index:50;}
+.statusbar{ height:44px; display:flex; align-items:flex-end; justify-content:space-between; padding:0 24px 6px; font-size:13px; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--text-1); flex-shrink:0;}
+.statusbar.on-dark{ color:var(--text-1-dark); }
+
+/* ===== TABLET FRAME ===== */
+.tab{ width:520px; height:700px; border-radius:28px; background:#000; padding:14px; box-shadow:0 30px 60px -20px rgba(0,0,0,.4);}
+.tab .screen{ width:100%; height:100%; border-radius:16px; overflow:hidden; background:var(--stone); display:flex; flex-direction:column;}
+
+/* ===== DESKTOP FRAME ===== */
+.desk{ width:900px; border-radius:12px; background:#1c1c1c; padding:10px 10px 0; box-shadow:0 30px 60px -20px rgba(0,0,0,.4);}
+.desk .chrome{ display:flex; gap:6px; padding:6px 4px 10px 8px;}
+.desk .chrome span{ width:10px; height:10px; border-radius:50%; background:#4a4a4a;}
+.desk .screen{ width:100%; height:560px; border-radius:6px 6px 0 0; overflow:hidden; background:var(--stone); display:flex;}
+
+/* ===== SHARED UI ===== */
+.tabbar{ height:64px; display:flex; align-items:center; justify-content:space-around; background:var(--linen); border-top:1px solid #E2DFD3; flex-shrink:0;}
+.tab-icon{ width:24px; height:24px; border-radius:6px; }
+.tab-icon.active{ background:var(--wheat); }
+.tab-icon.inactive{ border:1.75px solid var(--text-2); border-radius:6px; background:transparent;}
+.tab-fab{ width:44px; height:44px; border-radius:var(--r-full); background:var(--wheat); display:flex; align-items:center; justify-content:center; color:var(--chornozem); font-size:22px; font-weight:700; box-shadow:0 6px 14px rgba(217,164,65,.4);}
+
+.ring{ border-radius:50%; padding:2.5px; display:inline-flex; }
+.ring.unseen{ background:linear-gradient(135deg,var(--wheat),#C98A2E); }
+.ring.seen{ background:var(--chicory-soft); }
+.ring.none{ padding:0; }
+.avatar{ border-radius:50%; background:var(--chicory); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; border:2.5px solid var(--linen); }
+.avatar.xs{ width:24px; height:24px; font-size:10px;}
+.avatar.sm{ width:32px; height:32px; font-size:12px;}
+.avatar.md{ width:40px; height:40px; font-size:14px;}
+.avatar.lg{ width:64px; height:64px; font-size:20px;}
+.avatar.xl{ width:96px; height:96px; font-size:30px; border-width:4px;}
+
+.btn{ border-radius:var(--r-s); padding:12px 20px; font-weight:600; font-size:15px; text-align:center; border:none; display:inline-block; }
+.btn-primary{ background:var(--wheat); color:var(--chornozem); }
+.btn-secondary{ background:transparent; border:1.5px solid var(--chicory); color:var(--chicory); }
+.btn-block{ display:block; width:100%; }
+
+.input{ border:1.5px solid #D6D2C4; border-radius:var(--r-s); padding:14px 16px; font-size:15px; color:var(--text-1); background:var(--white); font-family:inherit;}
+.input.focus{ border-color:var(--chicory); }
+
+.chip{ background:var(--linen); border:1px solid #E2DFD3; border-radius:var(--r-full); padding:6px 14px; font-size:12px; font-weight:600; color:var(--text-2);}
+.chip.active{ background:var(--wheat); color:var(--chornozem); border-color:var(--wheat);}
+
+.card{ background:var(--linen); border-radius:var(--r-m); }
+
+.post-card{ background:var(--white); border-bottom:1px solid #E7E3D6; padding:16px; }
+.post-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.post-names{ line-height:1.25;}
+.post-name{ font-weight:700; font-size:14px; }
+.post-meta{ font-size:12px; color:var(--text-2); }
+.post-body{ font-size:15px; line-height:1.5; margin-bottom:12px; }
+.post-media{ border-radius:var(--r-m); background:linear-gradient(135deg,#C7DAF2,#EFD9AE); height:200px; margin-bottom:10px; }
+.eng-bar{ display:flex; gap:20px; align-items:center; }
+.eng-item{ display:flex; align-items:center; gap:5px; font-size:13px; color:var(--text-2); font-weight:600;}
+.ico{ width:19px; height:19px; }
+
+.chat-row{ display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid #EFECE1;}
+.chat-preview{ flex:1; min-width:0;}
+.chat-name{ font-weight:700; font-size:14.5px; }
+.chat-last{ font-size:13px; color:var(--text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px;}
+.chat-time{ font-size:11px; color:var(--text-2); font-family:'JetBrains Mono',monospace;}
+.badge{ background:var(--wheat); color:var(--chornozem); font-size:10px; font-weight:800; border-radius:var(--r-full); min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; padding:0 5px;}
+
+.bubble{ max-width:75%; padding:10px 14px; border-radius:16px; font-size:14.5px; line-height:1.4; margin-bottom:3px;}
+.bubble.mine{ background:var(--chicory-soft); align-self:flex-end; border-bottom-right-radius:4px; color:var(--text-1);}
+.bubble.theirs{ background:var(--white); align-self:flex-start; border-bottom-left-radius:4px; border:1px solid #EFECE1;}
+
+.section-header{ height:56px; display:flex; align-items:center; padding:0 16px; background:var(--linen); border-bottom:1px solid #E7E3D6; font-weight:700; font-size:17px; gap:12px; flex-shrink:0;}
+
+.dark .screen{ background:var(--night); }
+.dark .section-header{ background:var(--night-1); color:var(--text-1-dark); border-color:#262c47;}
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Kolo — Дизайн інтерфейсу</h1>
+<p class="page-sub">Партія 1: ключові екрани, побудовані на токенах з doc 10–16 (кольорова палітра «пшениця / цикорій», типографіка Golos Text, сигнатурний елемент — кільце «Коло»). Далі — Splash → Онбординг → Авторизація → Головна стрічка → Пост → Профіль → Messenger → Пошук, плюс responsive-демонстрація Tablet/Desktop.</p>
+
+<!-- ============ SPLASH ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">01</span><h2>Splash Screen</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div>
+      <div class="mob dark"><div class="notch"></div><div class="screen" style="align-items:center; justify-content:center; background:radial-gradient(circle at 50% 40%, #1F2540, #12162A);">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px;">
+          <svg width="88" height="88" viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="36" fill="none" stroke="#D9A441" stroke-width="5" stroke-dasharray="180 226" stroke-linecap="round" transform="rotate(-90 44 44)"/>
+            <circle cx="44" cy="44" r="36" fill="none" stroke="#2B3252" stroke-width="5" stroke-dasharray="46 226" stroke-dashoffset="-180" stroke-linecap="round" transform="rotate(-90 44 44)"/>
+          </svg>
+          <div style="font-family:'Golos Text'; font-weight:800; font-size:28px; color:#F2F0E8; letter-spacing:-0.01em;">Коло</div>
+        </div>
+      </div></div>
+      <div class="frame-label">Splash — кільце «Коло» як лоадер, обертання за годинниковою</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ONBOARDING ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">02</span><h2>Онбординг</h2><span class="plat">Mobile · 3 слайди</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="flex:1; display:flex; flex-direction:column; padding:32px 28px 0; background:linear-gradient(180deg,#F7F4EC,#EDEDE6);">
+        <div style="align-self:flex-end; font-size:13px; color:var(--text-2); font-weight:600; padding:8px 0;">Пропустити</div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+          <div style="width:220px; height:220px; border-radius:50%; background:linear-gradient(135deg,#D9A441,#5B7FB8); opacity:.18; position:relative;">
+            <div style="position:absolute; inset:30px; border-radius:50%; border:3px solid var(--wheat);"></div>
+          </div>
+        </div>
+        <div style="padding-bottom:8px;">
+          <h2 style="font-size:26px; font-weight:700; color:var(--chornozem); margin-bottom:10px; line-height:1.2;">Одна стрічка. Один месенджер. Одне коло.</h2>
+          <p style="font-size:14.5px; color:var(--text-2); line-height:1.5; margin-bottom:24px;">Спілкування та стрічка — в одному застосунку, без компромісів між ними.</p>
+        </div>
+      </div>
+      <div style="padding:0 28px 36px;">
+        <div style="display:flex; gap:6px; justify-content:center; margin-bottom:20px;">
+          <span style="width:22px; height:6px; border-radius:3px; background:var(--wheat);"></span>
+          <span style="width:6px; height:6px; border-radius:3px; background:#D6D2C4;"></span>
+          <span style="width:6px; height:6px; border-radius:3px; background:#D6D2C4;"></span>
+        </div>
+        <div class="btn btn-primary btn-block">Далі</div>
+      </div>
+    </div></div><div class="frame-label">Слайд 1 з 3 — «Один додаток»</div></div>
+  </div>
+</section>
+
+<!-- ============ AUTH ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">03</span><h2>Авторизація / Реєстрація</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="flex:1; padding:64px 28px 0; background:var(--stone);">
+        <div style="font-family:'Golos Text'; font-weight:800; font-size:24px; color:var(--chornozem); margin-bottom:6px;">Коло</div>
+        <h2 style="font-size:22px; font-weight:700; margin-bottom:28px; color:var(--chornozem);">З поверненням</h2>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+          <div class="input">Пошта</div>
+          <div class="input focus">Пароль</div>
+        </div>
+        <div style="text-align:right; font-size:13px; color:var(--chicory); font-weight:600; margin-bottom:24px;">Забули пароль?</div>
+        <div class="btn btn-primary btn-block" style="margin-bottom:20px;">Увійти</div>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+          <div style="flex:1; height:1px; background:#D6D2C4;"></div><span style="font-size:12px; color:var(--text-2);">або</span><div style="flex:1; height:1px; background:#D6D2C4;"></div>
+        </div>
+        <div class="btn btn-secondary btn-block" style="margin-bottom:10px;">Продовжити з Google</div>
+        <div class="btn btn-secondary btn-block">Продовжити з Apple</div>
+      </div>
+      <div style="text-align:center; padding:24px; font-size:13.5px; color:var(--text-2);">Немає акаунту? <span style="color:var(--chicory); font-weight:700;">Зареєструватися</span></div>
+    </div></div><div class="frame-label">Вхід — Email + OAuth</div></div>
+
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="flex:1; padding:64px 28px 0; background:var(--stone);">
+        <h2 style="font-size:22px; font-weight:700; margin-bottom:6px; color:var(--chornozem);">Створити акаунт</h2>
+        <p style="font-size:13.5px; color:var(--text-2); margin-bottom:28px;">Крок 1 з 3 — обліковий запис</p>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+          <div class="input">Пошта</div>
+          <div class="input">Пароль (мін. 8 символів)</div>
+        </div>
+        <div class="btn btn-primary btn-block">Продовжити</div>
+      </div>
+      <div style="padding:0 28px 40px; display:flex; gap:6px;">
+        <span style="flex:1; height:4px; border-radius:2px; background:var(--wheat);"></span>
+        <span style="flex:1; height:4px; border-radius:2px; background:#E2DFD3;"></span>
+        <span style="flex:1; height:4px; border-radius:2px; background:#E2DFD3;"></span>
+      </div>
+    </div></div><div class="frame-label">Реєстрація — крок 1</div></div>
+  </div>
+</section>
+
+<!-- ============ HOME FEED ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">04</span><h2>Головна стрічка</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="statusbar"><span>9:41</span><span>••• 5G 100%</span></div>
+      <div style="display:flex; gap:20px; padding:8px 16px 12px; border-bottom:1px solid #E7E3D6;">
+        <div style="font-weight:700; font-size:16px; color:var(--chornozem); border-bottom:2.5px solid var(--wheat); padding-bottom:8px;">Стрічка</div>
+        <div style="font-weight:600; font-size:16px; color:var(--text-2); padding-bottom:8px;">Глобальна</div>
+      </div>
+      <div style="display:flex; gap:14px; padding:14px 16px; overflow:hidden; border-bottom:1px solid #E7E3D6;">
+        <div style="text-align:center;"><div class="ring unseen"><div class="avatar md" style="border-color:var(--stone);">Ти</div></div><div style="font-size:10px; margin-top:4px; color:var(--text-2);">Ваша</div></div>
+        <div style="text-align:center;"><div class="ring unseen"><div class="avatar md" style="border-color:var(--stone); background:#C0483B;">МК</div></div><div style="font-size:10px; margin-top:4px; color:var(--text-2);">Марія</div></div>
+        <div style="text-align:center;"><div class="ring unseen"><div class="avatar md" style="border-color:var(--stone); background:#4C8C5A;">ОЛ</div></div><div style="font-size:10px; margin-top:4px; color:var(--text-2);">Олег</div></div>
+        <div style="text-align:center;"><div class="ring seen"><div class="avatar md" style="border-color:var(--stone);">НВ</div></div><div style="font-size:10px; margin-top:4px; color:var(--text-2);">Настя</div></div>
+      </div>
+      <div style="flex:1; overflow:hidden;">
+        <div class="post-card">
+          <div class="post-head"><div class="avatar sm">ІК</div><div class="post-names"><div class="post-name">Іван Ковальчук</div><div class="post-meta">@ivan_k · 2 год</div></div></div>
+          <div class="post-body">Сьогодні вечір у Львові — саме той настрій, коли хочеться нікуди не поспішати ✨</div>
+          <div class="post-media"></div>
+          <div class="eng-bar">
+            <div class="eng-item">♡ 128</div><div class="eng-item">💬 14</div><div class="eng-item">↻ 3</div><div class="eng-item" style="margin-left:auto;">⌵</div>
+          </div>
+        </div>
+        <div class="post-card">
+          <div class="post-head"><div class="avatar sm" style="background:var(--wheat); color:var(--chornozem);">СП</div><div class="post-names"><div class="post-name">Соломія Петрів</div><div class="post-meta">@solomiya · 5 год</div></div></div>
+          <div class="post-body">Запустили новий випуск подкасту про українську урбаністику. Посилання у профілі 🎙️</div>
+          <div class="eng-bar"><div class="eng-item">♡ 342</div><div class="eng-item">💬 56</div><div class="eng-item">↻ 21</div></div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab-icon active"></div><div class="tab-icon inactive"></div><div class="tab-fab">+</div><div class="tab-icon inactive"></div><div class="avatar xs" style="border:none;">Ти</div>
+      </div>
+    </div></div><div class="frame-label">Головна — Following, кільця історій, пост-картки</div></div>
+  </div>
+</section>
+
+<!-- ============ POST DETAIL ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">05</span><h2>Пост (детальний перегляд)</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="section-header">← <span>Публікація</span></div>
+      <div style="flex:1; overflow:hidden; background:var(--white);">
+        <div class="post-card" style="border:none;">
+          <div class="post-head"><div class="avatar sm">ІК</div><div class="post-names"><div class="post-name">Іван Ковальчук</div><div class="post-meta">2 години тому</div></div></div>
+          <div class="post-body" style="font-size:17px;">Сьогодні вечір у Львові — саме той настрій, коли хочеться нікуди не поспішати ✨ Ділюся фото з площі Ринок.</div>
+          <div class="post-media" style="height:260px;"></div>
+          <div class="eng-bar" style="padding:12px 0; border-top:1px solid #EFECE1; border-bottom:1px solid #EFECE1; margin:8px 0;"><div class="eng-item">♡ 128</div><div class="eng-item">🔖</div><div class="eng-item">↻ 3</div></div>
+        </div>
+        <div style="padding:0 16px;">
+          <div style="display:flex; gap:10px; margin-bottom:16px;"><div class="avatar xs" style="background:var(--chicory);">НВ</div><div><div style="font-size:13px; font-weight:700;">Настя В.</div><div style="font-size:14px; color:var(--text-1);">Який гарний ракурс! 😍</div></div></div>
+          <div style="display:flex; gap:10px;"><div class="avatar xs" style="background:#4C8C5A;">ОЛ</div><div><div style="font-size:13px; font-weight:700;">Олег Л.</div><div style="font-size:14px; color:var(--text-1);">Був там минулого тижня, дуже атмосферно</div></div></div>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; padding:12px 16px; border-top:1px solid #E7E3D6; background:var(--linen);"><div class="input" style="flex:1;">Написати коментар…</div></div>
+    </div></div><div class="frame-label">Пост — детальний перегляд + коментарі</div></div>
+  </div>
+</section>
+
+<!-- ============ STORIES VIEWER ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">06</span><h2>Історії — перегляд</h2><span class="plat">Mobile · fullscreen</span></div>
+  <div class="row">
+    <div><div class="mob dark"><div class="notch"></div><div class="screen" style="background:linear-gradient(160deg,#5B7FB8,#12162A);">
+      <div style="display:flex; gap:4px; padding:14px 12px 0;"><div style="flex:1; height:3px; background:rgba(255,255,255,.9); border-radius:2px;"></div><div style="flex:1; height:3px; background:rgba(255,255,255,.35); border-radius:2px;"></div><div style="flex:1; height:3px; background:rgba(255,255,255,.35); border-radius:2px;"></div></div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px;"><div class="avatar sm" style="border-color:#fff;">МК</div><div style="color:#fff; font-weight:700; font-size:14px;">Марія Коваль <span style="opacity:.7; font-weight:500; font-size:12px;">· 3 год</span></div><div style="margin-left:auto; color:#fff; font-size:20px;">✕</div></div>
+      <div style="flex:1;"></div>
+      <div style="padding:20px; display:flex; gap:10px; align-items:center;"><div class="input" style="flex:1; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); color:#fff;">Надіслати повідомлення…</div><div style="color:#fff; font-size:22px;">♡</div></div>
+    </div></div><div class="frame-label">Історія — прогрес-бари, swipe-to-reply</div></div>
+  </div>
+</section>
+
+<!-- ============ REELS ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">07</span><h2>Reels (короткі відео)</h2><span class="plat">Mobile · концепт</span></div>
+  <p style="font-size:13.5px; color:var(--error); margin:-12px 0 20px; max-width:600px; font-weight:600;">⚠ Примітка: за doc 01 (Vision) вертикальна відео-стрічка як окремий основний pillar — явний non-goal v1 (тільки Stories з відео в Phase 2). Нижче — концептуальний макет на випадок, якщо продукт-рішення зміниться; він не входить у поточний Phase 1–4 roadmap (doc 03).</p>
+  <div class="row">
+    <div><div class="mob dark"><div class="notch"></div><div class="screen" style="background:#000;">
+      <div style="flex:1; background:linear-gradient(200deg,#2B2620,#12162A); position:relative;">
+        <div style="position:absolute; right:12px; bottom:120px; display:flex; flex-direction:column; gap:22px; align-items:center; color:#fff;">
+          <div class="avatar sm" style="border-color:#fff;">ДМ</div>
+          <div style="text-align:center; font-size:11px;">♡<br>2.1k</div>
+          <div style="text-align:center; font-size:11px;">💬<br>340</div>
+          <div style="text-align:center; font-size:11px;">↻<br>90</div>
+        </div>
+        <div style="position:absolute; left:16px; bottom:24px; right:70px; color:#fff;"><div style="font-weight:700; margin-bottom:6px;">@dmytro_m</div><div style="font-size:13.5px; opacity:.9;">Ранок у Карпатах 🏔️</div></div>
+      </div>
+    </div></div><div class="frame-label">Reels — концепт, поза межами v1</div></div>
+  </div>
+</section>
+
+<!-- ============ CREATE POST ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">08</span><h2>Створення поста</h2><span class="plat">Mobile · bottom sheet</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen" style="justify-content:flex-end;">
+      <div style="height:70%; background:var(--white); border-radius:24px 24px 0 0; display:flex; flex-direction:column; box-shadow:0 -10px 30px rgba(0,0,0,.15);">
+        <div style="width:36px; height:4px; background:#D6D2C4; border-radius:2px; margin:10px auto;"></div>
+        <div style="display:flex; align-items:center; padding:8px 16px 16px;"><span style="font-size:14px; color:var(--text-2); font-weight:600;">Скасувати</span><span style="margin-left:auto; font-weight:700; font-size:16px;">Новий пост</span><span style="margin-left:auto; width:40px;"></span></div>
+        <div style="display:flex; gap:10px; padding:0 16px 12px;"><div class="avatar sm">Ти</div><div class="chip">🌐 Усі</div></div>
+        <div style="flex:1; padding:0 16px; color:var(--text-2); font-size:16px;">Що у вас нового?</div>
+        <div style="display:flex; gap:20px; padding:16px; border-top:1px solid #EFECE1;">🖼️ 🎞️ #️⃣ 📍</div>
+        <div style="padding:0 16px 28px;"><div class="btn" style="background:#E2DFD3; color:#A79F8C;" >Опублікувати</div></div>
+      </div>
+    </div></div><div class="frame-label">Compose sheet — вимкнена кнопка до вводу тексту</div></div>
+  </div>
+</section>
+
+<!-- ============ PROFILE ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">09</span><h2>Профіль</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="height:120px; background:linear-gradient(120deg,#D9A441,#5B7FB8);"></div>
+      <div style="padding:0 16px; margin-top:-40px;">
+        <div class="avatar xl" style="background:var(--chornozem);">СВ</div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:10px;"><div style="font-size:19px; font-weight:800; color:var(--chornozem);">Соломія Власенко</div><span style="color:var(--chicory); font-size:14px;">✓</span></div>
+        <div style="font-family:'JetBrains Mono'; font-size:12.5px; color:var(--text-2); margin-bottom:8px;">@solomiya · Київ</div>
+        <div style="font-size:14px; line-height:1.4; color:var(--text-1); margin-bottom:12px;">Урбаністка, ведучу подкаст про міста. Тут — трохи фото та багато думок.</div>
+        <div style="display:flex; gap:20px; font-size:13.5px; margin-bottom:16px;"><span><b>842</b> підписників</span><span><b>210</b> підписок</span></div>
+        <div style="display:flex; gap:10px; margin-bottom:20px;"><div class="btn btn-primary" style="flex:1;">Підписатися</div><div class="btn btn-secondary" style="flex:1;">Написати</div></div>
+      </div>
+      <div style="display:flex; border-top:1px solid #E7E3D6; border-bottom:1px solid #E7E3D6;"><div style="flex:1; text-align:center; padding:12px; font-weight:700; font-size:13px; border-bottom:2.5px solid var(--wheat);">Пости</div><div style="flex:1; text-align:center; padding:12px; font-weight:600; font-size:13px; color:var(--text-2);">Медіа</div></div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:2px; flex:1; overflow:hidden;">
+        <div style="background:#EFD9AE;"></div><div style="background:#DCE5F3;"></div><div style="background:#F0D9A8;"></div>
+        <div style="background:#DCE5F3;"></div><div style="background:#EFD9AE;"></div><div style="background:#DCE5F3;"></div>
+      </div>
+    </div></div><div class="frame-label">Профіль — cover + avatar overlap + tabs</div></div>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">10</span><h2>Налаштування</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="section-header">← <span>Налаштування</span></div>
+      <div style="flex:1; padding-top:8px;">
+        <div style="padding:8px 16px; font-size:12px; font-weight:700; color:var(--text-2); text-transform:uppercase; letter-spacing:.04em;">Акаунт</div>
+        <div class="chat-row"><span>👤</span><div class="chat-preview"><div class="chat-name" style="font-size:14px;">Обліковий запис</div></div><span>›</span></div>
+        <div class="chat-row"><span>🔒</span><div class="chat-preview"><div class="chat-name" style="font-size:14px;">Приватність</div></div><span>›</span></div>
+        <div class="chat-row"><span>🔔</span><div class="chat-preview"><div class="chat-name" style="font-size:14px;">Сповіщення</div></div><span>›</span></div>
+        <div style="padding:16px 16px 8px; font-size:12px; font-weight:700; color:var(--text-2); text-transform:uppercase; letter-spacing:.04em;">Дані та безпека</div>
+        <div class="chat-row"><span>🛡️</span><div class="chat-preview"><div class="chat-name" style="font-size:14px;">Пристрої та сесії</div></div><span>›</span></div>
+        <div class="chat-row"><span>🌐</span><div class="chat-preview"><div class="chat-name" style="font-size:14px;">Мова — Українська</div></div><span>›</span></div>
+        <div style="padding:20px 16px; color:var(--error); font-weight:700; font-size:14px;">Вийти з усіх пристроїв</div>
+      </div>
+    </div></div><div class="frame-label">Налаштування — секції за IA doc 09</div></div>
+  </div>
+</section>
+
+<!-- ============ MESSENGER: LIST ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">11</span><h2>Messenger — список чатів</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="section-header"><span>Повідомлення</span><span style="margin-left:auto; font-size:20px;">✎</span></div>
+      <div style="padding:10px 16px;"><div class="input" style="padding:9px 14px; font-size:14px; color:var(--text-2);">🔍 Пошук</div></div>
+      <div style="flex:1; overflow:hidden;">
+        <div class="chat-row"><div class="ring unseen"><div class="avatar md">МК</div></div><div class="chat-preview"><div class="chat-name">Марія Коваль</div><div class="chat-last">Добре, до зустрічі завтра!</div></div><div style="text-align:right;"><div class="chat-time">14:02</div><div class="badge" style="margin-top:4px; margin-left:auto;">2</div></div></div>
+        <div class="chat-row"><div class="avatar md" style="background:#4C8C5A;">ОЛ</div><div class="chat-preview"><div class="chat-name">Олег Литвин</div><div class="chat-last" style="font-weight:400;">Ти: Дякую 🙏</div></div><div class="chat-time">Вчора</div></div>
+        <div class="chat-row"><div class="avatar md" style="background:var(--chornozem);">Урбан-клуб</div><div class="chat-preview"><div class="chat-name">Урбан-клуб Києва</div><div class="chat-last" style="font-weight:400;">Настя: хто йде у суботу?</div></div><div class="chat-time">Пн</div></div>
+      </div>
+      <div class="tabbar"><div class="tab-icon inactive"></div><div class="tab-icon inactive"></div><div class="tab-fab">+</div><div class="tab-icon active"></div><div class="avatar xs" style="border:none;">Ти</div></div>
+    </div></div><div class="frame-label">Список чатів — кільце «непрочитана історія» на аватарі</div></div>
+  </div>
+</section>
+
+<!-- ============ MESSENGER: THREAD ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">12</span><h2>Messenger — переписка</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="section-header">← <div class="avatar xs" style="margin:0 8px 0 4px;">МК</div><div><div style="font-size:15px;">Марія Коваль</div><div style="font-size:11px; color:var(--text-2); font-weight:500;">🔒 наскрізне шифрування</div></div></div>
+      <div style="flex:1; padding:16px; display:flex; flex-direction:column; overflow:hidden; background:var(--stone);">
+        <div style="align-self:center; font-size:11px; color:var(--text-2); margin-bottom:14px; font-family:'JetBrains Mono';">Сьогодні</div>
+        <div class="bubble theirs">Привіт! Ти завтра на зустрічі?</div>
+        <div class="bubble mine">Так, буду о 10:00 🙌</div>
+        <div class="bubble theirs">Добре, до зустрічі завтра!</div>
+        <div style="align-self:flex-end; font-size:10px; color:var(--chicory); font-family:'JetBrains Mono'; margin-top:2px;">14:02 ✓✓</div>
+        <div style="display:flex; gap:4px; margin-top:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--text-2);"></div><div style="width:6px;height:6px;border-radius:50%;background:var(--text-2); opacity:.6;"></div><div style="width:6px;height:6px;border-radius:50%;background:var(--text-2); opacity:.3;"></div></div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center; padding:10px 16px; background:var(--linen); border-top:1px solid #E7E3D6;"><span>📎</span><div class="input" style="flex:1; padding:9px 14px;">Повідомлення…</div><span>🎤</span></div>
+    </div></div><div class="frame-label">Переписка — 🔒 постійний індикатор E2E, typing dots</div></div>
+  </div>
+</section>
+
+<!-- ============ SEARCH ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">13</span><h2>Пошук</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="padding:16px; background:var(--linen); border-bottom:1px solid #E7E3D6;"><div class="input" style="padding:10px 14px;">🔍 урбаністика</div></div>
+      <div style="display:flex; gap:10px; padding:12px 16px; border-bottom:1px solid #E7E3D6;"><div class="chip active">Люди</div><div class="chip">Пости</div><div class="chip">Хештеги</div></div>
+      <div style="flex:1; overflow:hidden;">
+        <div class="chat-row"><div class="avatar md">СВ</div><div class="chat-preview"><div class="chat-name">Соломія Власенко</div><div class="chat-last" style="font-weight:400;">@solomiya · 842 підписники</div></div><div class="chip" style="font-size:11px;">Підписатись</div></div>
+        <div class="chat-row"><div class="avatar md" style="background:var(--chornozem);">УК</div><div class="chat-preview"><div class="chat-name">Урбан-клуб Києва</div><div class="chat-last" style="font-weight:400;">Спільнота · 1.2k учасників</div></div></div>
+      </div>
+    </div></div><div class="frame-label">Пошук — уніфікований, вкладки типів результатів</div></div>
+  </div>
+</section>
+
+<!-- ============ NOTIFICATIONS ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">14</span><h2>Уведомлення</h2><span class="plat">Mobile</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="section-header"><span>Сповіщення</span></div>
+      <div style="flex:1; overflow:hidden;">
+        <div class="chat-row"><div class="avatar sm" style="background:var(--wheat); color:var(--chornozem);">НВ</div><div class="chat-preview"><span style="font-size:14px;"><b>Настя В.</b> вподобала ваш пост</span></div><div class="chat-time">3 хв</div></div>
+        <div class="chat-row"><div class="avatar sm" style="background:#4C8C5A;">ОЛ</div><div class="chat-preview"><span style="font-size:14px;"><b>Олег Л.</b> прокоментував: «Круто!»</span></div><div class="chat-time">1 год</div></div>
+        <div class="chat-row"><div class="avatar sm">МК</div><div class="chat-preview"><span style="font-size:14px;"><b>Марія К.</b> підписалась на вас</span></div><div class="chat-time">Вчора</div></div>
+      </div>
+    </div></div><div class="frame-label">Сповіщення — крапка/лічильник, без кольору-як-єдиного-сигналу</div></div>
+  </div>
+</section>
+
+<!-- ============ CALLS ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">15</span><h2>Аудіо / Відеодзвінок</h2><span class="plat">Mobile · Phase 3</span></div>
+  <div class="row">
+    <div><div class="mob dark"><div class="notch"></div><div class="screen" style="background:linear-gradient(180deg,#1F2540,#12162A); align-items:center;">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;">
+        <div class="avatar xl" style="background:var(--chicory);">МК</div>
+        <div style="color:#fff; font-weight:700; font-size:20px;">Марія Коваль</div>
+        <div style="color:#A7A290; font-size:14px; font-family:'JetBrains Mono';">00:42 · аудіодзвінок</div>
+      </div>
+      <div style="display:flex; gap:24px; padding-bottom:48px;">
+        <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:#fff;">🔇</div>
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--error); display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px;">✕</div>
+        <div style="width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:#fff;">🔊</div>
+      </div>
+    </div></div><div class="frame-label">Аудіодзвінок — WebRTC, doc 04 CALL-1</div></div>
+
+    <div><div class="mob dark"><div class="notch"></div><div class="screen" style="background:#000;">
+      <div style="flex:1; position:relative; background:linear-gradient(200deg,#2B2620,#12162A);">
+        <div style="position:absolute; top:16px; right:16px; width:96px; height:140px; border-radius:12px; background:var(--chicory); border:2px solid #fff;"></div>
+        <div style="position:absolute; bottom:20px; left:16px; color:#fff; font-size:13px; font-family:'JetBrains Mono';">05:12</div>
+      </div>
+      <div style="display:flex; gap:20px; justify-content:center; padding:24px;">
+        <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center;">🎙️</div>
+        <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center;">🎥</div>
+        <div style="width:60px; height:60px; border-radius:50%; background:var(--error); color:#fff; display:flex; align-items:center; justify-content:center; font-size:20px;">✕</div>
+        <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center;">🔄</div>
+      </div>
+    </div></div><div class="frame-label">Відеодзвінок — picture-in-picture self view</div></div>
+  </div>
+</section>
+
+<!-- ============ CHANNELS & COMMUNITIES ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">16</span><h2>Канали / Спільноти</h2><span class="plat">Mobile · Phase 2</span></div>
+  <div class="row">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="height:110px; background:linear-gradient(120deg,#5B7FB8,#12162A);"></div>
+      <div style="padding:0 16px; margin-top:-32px;">
+        <div class="avatar lg" style="background:var(--chornozem); border-color:var(--stone);">УК</div>
+        <div style="font-size:18px; font-weight:800; margin-top:8px;">Урбан-клуб Києва</div>
+        <div style="display:flex; gap:8px; margin:6px 0 12px;"><div class="chip">Публічна</div><div class="chip">1.2k учасників</div></div>
+        <div class="btn btn-primary btn-block">Приєднатись</div>
+      </div>
+      <div style="display:flex; border-top:1px solid #E7E3D6; margin-top:16px;"><div style="flex:1; text-align:center; padding:10px; font-weight:700; font-size:12.5px; border-bottom:2px solid var(--wheat);">Пости</div><div style="flex:1; text-align:center; padding:10px; font-size:12.5px; color:var(--text-2);">Учасники</div><div style="flex:1; text-align:center; padding:10px; font-size:12.5px; color:var(--text-2);">Про</div></div>
+      <div style="flex:1; padding:12px 16px; overflow:hidden;"><div class="post-card" style="border-radius:var(--r-m); border:1px solid #EFECE1;"><div class="post-body" style="font-size:13.5px;">Хто йде у суботу на екскурсію набережною? 🚶</div></div></div>
+    </div></div><div class="frame-label">Спільнота — header + tabs (doc 09 Community Structure)</div></div>
+  </div>
+</section>
+
+<!-- ============ RESPONSIVE: FEED ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">17</span><h2>Головна стрічка — Responsive</h2><span class="plat">Mobile · Tablet · Desktop</span></div>
+  <div class="row" style="align-items:flex-start;">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div style="flex:1; overflow:hidden;">
+        <div class="post-card"><div class="post-head"><div class="avatar sm">ІК</div><div class="post-names"><div class="post-name">Іван Ковальчук</div><div class="post-meta">2 год</div></div></div><div class="post-body">Вечір у Львові ✨</div><div class="post-media" style="height:150px;"></div></div>
+      </div>
+      <div class="tabbar"><div class="tab-icon active"></div><div class="tab-icon inactive"></div><div class="tab-fab">+</div><div class="tab-icon inactive"></div><div class="avatar xs" style="border:none;">Ти</div></div>
+    </div></div><div class="frame-label">Mobile — одноколонковий stream, bottom tab bar</div></div>
+
+    <div><div class="tab"><div class="screen">
+      <div style="display:flex; height:100%;">
+        <div style="width:64px; background:var(--linen); border-right:1px solid #E2DFD3; display:flex; flex-direction:column; align-items:center; gap:26px; padding-top:24px;">
+          <div style="font-weight:800; color:var(--wheat); font-size:18px;">К</div>
+          <div class="tab-icon active"></div><div class="tab-icon inactive"></div><div class="tab-fab" style="width:36px;height:36px;font-size:18px;">+</div><div class="tab-icon inactive"></div>
+        </div>
+        <div style="flex:1; overflow:hidden;">
+          <div style="padding:16px; font-weight:800; font-size:18px; border-bottom:1px solid #E2DFD3;">Стрічка</div>
+          <div class="post-card"><div class="post-head"><div class="avatar sm">ІК</div><div class="post-names"><div class="post-name">Іван Ковальчук</div><div class="post-meta">2 год</div></div></div><div class="post-body">Вечір у Львові — атмосферно ✨</div><div class="post-media" style="height:170px;"></div></div>
+        </div>
+      </div>
+    </div></div><div class="frame-label">Tablet — постійний лівий rail замість bottom bar</div></div>
+
+    <div><div class="desk"><div class="chrome"><span></span><span></span><span></span></div><div class="screen">
+      <div style="width:220px; background:var(--linen); border-right:1px solid #E2DFD3; padding:20px 0;">
+        <div style="padding:0 20px 24px; font-weight:800; font-size:20px; color:var(--chornozem);">Коло</div>
+        <div style="padding:10px 20px; display:flex; gap:10px; align-items:center; background:var(--wheat-soft); border-radius:0 var(--r-full) var(--r-full) 0; margin-right:16px; font-weight:700; font-size:14px;">🏠 Стрічка</div>
+        <div style="padding:10px 20px; display:flex; gap:10px; align-items:center; font-size:14px; color:var(--text-2);">🔍 Пошук</div>
+        <div style="padding:10px 20px; display:flex; gap:10px; align-items:center; font-size:14px; color:var(--text-2);">💬 Повідомлення</div>
+        <div style="padding:10px 20px; display:flex; gap:10px; align-items:center; font-size:14px; color:var(--text-2);">👤 Профіль</div>
+        <div style="margin:16px 20px 0; padding:10px 16px; background:var(--wheat); color:var(--chornozem); border-radius:var(--r-s); text-align:center; font-weight:700; font-size:13px;">Опублікувати</div>
+      </div>
+      <div style="flex:1; overflow:hidden; display:flex; justify-content:center;">
+        <div style="width:520px; padding-top:20px;">
+          <div class="post-card" style="border-radius:var(--r-m); border:1px solid #EFECE1; margin-bottom:14px;"><div class="post-head"><div class="avatar sm">ІК</div><div class="post-names"><div class="post-name">Іван Ковальчук</div><div class="post-meta">@ivan_k · 2 год</div></div></div><div class="post-body">Сьогодні вечір у Львові — саме той настрій, коли хочеться нікуди не поспішати ✨</div><div class="post-media" style="height:230px;"></div><div class="eng-bar"><div class="eng-item">♡ 128</div><div class="eng-item">💬 14</div><div class="eng-item">↻ 3</div></div></div>
+        </div>
+      </div>
+    </div></div><div class="frame-label">Desktop — постійний sidebar, центрована колонка (doc 19 IA)</div></div>
+  </div>
+</section>
+
+<!-- ============ RESPONSIVE: MESSENGER ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">18</span><h2>Messenger — Responsive</h2><span class="plat">Mobile · Tablet · Desktop</span></div>
+  <div class="row" style="align-items:flex-start;">
+    <div><div class="mob"><div class="notch"></div><div class="screen">
+      <div class="section-header"><span>Повідомлення</span></div>
+      <div style="flex:1; overflow:hidden;">
+        <div class="chat-row"><div class="ring unseen"><div class="avatar md">МК</div></div><div class="chat-preview"><div class="chat-name">Марія Коваль</div><div class="chat-last">Добре, до завтра!</div></div><div class="chat-time">14:02</div></div>
+        <div class="chat-row"><div class="avatar md" style="background:#4C8C5A;">ОЛ</div><div class="chat-preview"><div class="chat-name">Олег Литвин</div><div class="chat-last" style="font-weight:400;">Дякую 🙏</div></div><div class="chat-time">Вчора</div></div>
+      </div>
+    </div></div><div class="frame-label">Mobile — окремий екран списку, тап відкриває thread</div></div>
+
+    <div><div class="tab"><div class="screen">
+      <div style="display:flex; height:100%;">
+        <div style="width:220px; border-right:1px solid #E2DFD3; overflow:hidden;">
+          <div class="section-header" style="height:48px; font-size:15px;">Чати</div>
+          <div class="chat-row" style="background:var(--linen);"><div class="ring unseen"><div class="avatar sm">МК</div></div><div class="chat-preview"><div class="chat-name" style="font-size:13px;">Марія Коваль</div></div></div>
+          <div class="chat-row"><div class="avatar sm" style="background:#4C8C5A;">ОЛ</div><div class="chat-preview"><div class="chat-name" style="font-size:13px;">Олег Литвин</div></div></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column;">
+          <div class="section-header" style="height:48px;"><div class="avatar xs">МК</div><span style="font-size:14px; margin-left:8px;">Марія Коваль</span></div>
+          <div style="flex:1; padding:14px; display:flex; flex-direction:column; background:var(--stone);"><div class="bubble theirs">Привіт! Завтра о 10?</div><div class="bubble mine">Так, буду 🙌</div></div>
+        </div>
+      </div>
+    </div></div><div class="frame-label">Tablet — двоколонковий (список + thread)</div></div>
+
+    <div><div class="desk"><div class="chrome"><span></span><span></span><span></span></div><div class="screen">
+      <div style="width:64px; background:var(--linen); border-right:1px solid #E2DFD3; flex-shrink:0;"></div>
+      <div style="width:280px; border-right:1px solid #E2DFD3; overflow:hidden;">
+        <div style="padding:16px; font-weight:800; font-size:17px; border-bottom:1px solid #E2DFD3;">Чати</div>
+        <div class="chat-row" style="background:var(--linen);"><div class="ring unseen"><div class="avatar sm">МК</div></div><div class="chat-preview"><div class="chat-name">Марія Коваль</div><div class="chat-last" style="font-weight:400;">Добре, до завтра!</div></div></div>
+        <div class="chat-row"><div class="avatar sm" style="background:#4C8C5A;">ОЛ</div><div class="chat-preview"><div class="chat-name">Олег Литвин</div><div class="chat-last" style="font-weight:400;">Дякую 🙏</div></div></div>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div style="height:56px; display:flex; align-items:center; padding:0 20px; border-bottom:1px solid #E2DFD3; gap:10px;"><div class="avatar sm">МК</div><div><div style="font-weight:700; font-size:14px;">Марія Коваль</div><div style="font-size:11px; color:var(--text-2);">🔒 наскрізне шифрування</div></div></div>
+        <div style="flex:1; padding:20px; display:flex; flex-direction:column; background:var(--stone);"><div class="bubble theirs">Привіт! Ти завтра на зустрічі?</div><div class="bubble mine">Так, буду о 10:00 🙌</div><div class="bubble theirs">Добре, до зустрічі завтра!</div></div>
+        <div style="padding:14px 20px; border-top:1px solid #E2DFD3; display:flex; gap:10px;"><div class="input" style="flex:1;">Повідомлення… (Enter — надіслати)</div></div>
+      </div>
+    </div></div><div class="frame-label">Desktop — три панелі (doc 10/19 ASCII wireframe)</div></div>
+  </div>
+</section>
+
+<!-- ============ RESPONSIVE: PROFILE ============ -->
+<section class="screen-group">
+  <div class="group-head"><span class="idx">19</span><h2>Профіль — Responsive</h2><span class="plat">Tablet · Desktop</span></div>
+  <div class="row" style="align-items:flex-start;">
+    <div><div class="tab"><div class="screen">
+      <div style="height:110px; background:linear-gradient(120deg,#D9A441,#5B7FB8);"></div>
+      <div style="padding:0 24px; margin-top:-36px;"><div class="avatar lg" style="background:var(--chornozem);">СВ</div>
+        <div style="font-size:18px; font-weight:800; margin-top:8px;">Соломія Власенко</div>
+        <div style="display:flex; gap:10px; margin-top:10px;"><div class="btn btn-primary" style="padding:9px 18px;">Підписатися</div><div class="btn btn-secondary" style="padding:9px 18px;">Написати</div></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin-top:20px; flex:1; overflow:hidden;"><div style="background:#EFD9AE;"></div><div style="background:#DCE5F3;"></div><div style="background:#F0D9A8;"></div></div>
+    </div></div><div class="frame-label">Tablet</div></div>
+
+    <div><div class="desk"><div class="chrome"><span></span><span></span><span></span></div><div class="screen" style="flex-direction:column;">
+      <div style="height:160px; background:linear-gradient(120deg,#D9A441,#5B7FB8);"></div>
+      <div style="display:flex; padding:0 48px; margin-top:-50px; gap:28px; align-items:flex-end;">
+        <div class="avatar xl" style="background:var(--chornozem); width:110px; height:110px;">СВ</div>
+        <div style="padding-bottom:10px; flex:1;"><div style="font-size:24px; font-weight:800;">Соломія Власенко</div><div style="font-family:'JetBrains Mono'; color:var(--text-2); font-size:13px;">@solomiya · Київ</div></div>
+        <div style="display:flex; gap:10px; padding-bottom:14px;"><div class="btn btn-primary">Підписатися</div><div class="btn btn-secondary">Написати</div></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:4px; margin:24px 48px; flex:1; overflow:hidden;"><div style="background:#EFD9AE; border-radius:var(--r-s);"></div><div style="background:#DCE5F3; border-radius:var(--r-s);"></div><div style="background:#F0D9A8; border-radius:var(--r-s);"></div><div style="background:#DCE5F3; border-radius:var(--r-s);"></div></div>
+    </div></div><div class="frame-label">Desktop — ширший grid, inline дії поруч з іменем</div></div>
+  </div>
+</section>
+
+</body>
+</html>
