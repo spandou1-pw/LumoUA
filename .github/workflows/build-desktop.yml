@@ -80,8 +80,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           projectPath: desktop
-          tagName: app-v__VERSION__
-          releaseName: 'Lumo Desktop v__VERSION__'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Lumo Desktop ${{ github.ref_name }}'
           releaseBody: 'Automated build from CI. Windows build is unsigned — click "More info" → "Run anyway" on the SmartScreen warning.'
           releaseDraft: false
           prerelease: false
