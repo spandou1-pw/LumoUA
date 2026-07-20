@@ -236,3 +236,43 @@ export interface Conversation {
 export function useConversations() {
   return useQuery({ queryKey: ['conversations'], queryFn: () => api.get<{ items: Conversation[] }>('/conversations') });
 }
+
+// ---------- Messages ----------
+
+export interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  text: string;
+  createdAt: string;
+  editedAt?: string | null;
+  deletedAt?: string | null;
+}
+
+export function useMessages(conversationId: string) {
+  return useQuery<Message[]>({
+    queryKey: ['messages', conversationId],
+    queryFn: () => api.get<Message[]>(`/conversations/${conversationId}/messages`),
+    enabled: !!conversationId,
+  });
+}
+
+export function useSendMessage() {
+  return useMutation({
+    mutationFn: ({ conversationId, text }: { conversationId: string; text: string }) =>
+      api.post<Message>(`/conversations/${conversationId}/messages`, { text }),
+  });
+}
+
+export function useDeleteMessage() {
+  return useMutation({
+    mutationFn: (messageId: string) => api.delete(`/messages/${messageId}`),
+  });
+}
+
+export function useEditMessage() {
+  return useMutation({
+    mutationFn: ({ messageId, text }: { messageId: string; text: string }) =>
+      api.patch<Message>(`/messages/${messageId}`, { text }),
+  });
+}

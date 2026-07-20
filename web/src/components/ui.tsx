@@ -92,6 +92,26 @@ const stateStyles = `
   .message { font-size: 14px; color: var(--text-secondary); margin: 0 0 4px; }
 `;
 
+export function Avatar({ name, url, size = 40 }: { name: string; url?: string | null; size?: number }) {
+  if (url) {
+    return <img src={url} alt={name} style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover' }} />;
+  }
+  return (
+    <div style={{ width: size, height: size, borderRadius: '50%', background: 'var(--color-chicory, #7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: size * 0.4, flexShrink: 0 }}>
+      {name.charAt(0).toUpperCase()}
+    </div>
+  );
+}
+
+export function Badge({ count }: { count: number }) {
+  if (count <= 0) return null;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 20, height: 20, padding: '0 6px', borderRadius: 10, background: 'var(--color-wheat, #2AABEE)', color: '#fff', fontSize: 11, fontWeight: 700, lineHeight: 1 }}>
+      {count > 99 ? '99+' : count}
+    </span>
+  );
+}
+
 export function Skeleton({ width = '100%', height = 16 }: { width?: string | number; height?: number }) {
   return (
     <div
