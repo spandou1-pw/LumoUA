@@ -13,7 +13,7 @@
  * web specifically (while still returning tokens in-body for mobile) is
  * the flagged hardening follow-up — see WEB_DESKTOP.md.
  */
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '/api';
 const REFRESH_TOKEN_KEY = 'lumo_refresh_token';
 const DEVICE_ID_KEY = 'lumo_device_id';
 
